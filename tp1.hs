@@ -76,17 +76,20 @@ procCola (_:xs) = xs
 
 procHijosRose :: Procesador (RoseTree a) (RoseTree a)
 procHijosRose Rose _ roseHijos = roseHijos
+-- Rose a [RoseTree a]
 
 procHijosAT :: Procesador (AT a) (AT a)
 procHijosAT Nil = []
 procHijosAT (Tern _ izq medio der) = [izq, medio, der]
+-- AT a puede ser Nil ó Tern a (AT a) (AT a) (AT a)
 
 procRaizTrie :: Procesador (Trie a) (Maybe a)
-procRaizTrie  = undefined
+procRaizTrie TrieNodo a _ = a
+-- Trie a es TrieNodo (Maybe a) [(Char, Trie a)] y te pide la parte del Maybe
 
 procSubTries :: Procesador (Trie a) (Char, Trie a)
-procSubTries  = undefined
-
+procSubTries TrieNodo a hijos = hijos
+-- Lo mismo pero quiere los hijos == el Char y el siguiente Trie a
 
 --Ejercicio 2
 
