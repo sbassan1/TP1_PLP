@@ -66,7 +66,7 @@ instance Show a => Show (Trie a) where
 --Ejercicio 1
 procVacio :: Procesador a b
 procVacio = []
-
+-- De estos tres no estoy seguro bien de como se hacen
 procId :: Procesador a a
 procId a = a  
 
