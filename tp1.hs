@@ -101,8 +101,9 @@ foldRose fRs (Rose n roseHijos) = fRs n (map rec roseHijos)
         where rec = foldRose fRs
 
 --foldTrie :: (a -> [(c,b)] -> b) -> Trie a -> b
-foldTrie = undefined
+foldTrie fT (TrieNodo a as)= fT a map (\(x,xs) -> (x, foldTrie fT xs)) as
 
+-- data Maybe = Nothing | Just a
 
 --Ejercicio 3
 unoxuno :: Procesador [a] [a]
