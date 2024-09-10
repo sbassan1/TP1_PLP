@@ -141,7 +141,7 @@ hojasRose :: Procesador (RoseTree a) a
 hojasRose = foldRose (\x rec -> if null rec then [x] else concat rec)
 
 ramasRose :: Procesador (RoseTree a) [a]
-ramasRose = undefined
+ramasRose = foldRose (\x rec -> if null rec then [[x]] else map (x:) (concat rec))
 
 
 --Definición del árbol rosado (RoseTree)
