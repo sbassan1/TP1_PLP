@@ -92,47 +92,61 @@ procSubTries (TrieNodo a hijos) = hijos
 -- Lo mismo pero quiere los hijos == el Char y el siguiente Trie a
 
 --Ejercicio 2
+at = Tern 1 (Tern 2 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil)
+t = TrieNodo (Just True) [('a', TrieNodo (Just True) []), ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])]), ('c', TrieNodo (Just True) [])]
+
+rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
 
 foldAT :: (a -> b -> b -> b -> b) -> b -> AT a -> b
+foldAT fAt c Nil = c
 foldAT fAt c (Tern w x y z) = fAt w (foldAT fAt c x) (foldAT fAt c y) (foldAT fAt c z) 
 
 foldRose :: (a -> [b] -> b) -> RoseTree a -> b
 foldRose fRs (Rose n roseHijos) = fRs n (map rec roseHijos)
         where rec = foldRose fRs
 
---foldTrie :: (a -> [(c,b)] -> b) -> Trie a -> b
-foldTrie fT (TrieNodo a as)= fT a map (\(x,xs) -> (x, foldTrie fT xs)) as
+foldTrie :: (Maybe a1  -> ((a2 -> b1) -> [a2] -> [b1])  -> ((a3, Trie a1) -> (a3, b2))  -> [(Char, Trie a1)]  -> b2) -> Trie a1 -> b2
+foldTrie fT (TrieNodo a as) = fT a map (\(x,xs) -> (x, foldTrie fT xs)) as
 
--- data Maybe = Nothing | Just a
 
 --Ejercicio 3
 unoxuno :: Procesador [a] [a]
-unoxuno = undefined
+unoxuno = map (:[])
 
 sufijos :: Procesador [a] [a]
-sufijos = undefined
+sufijos = foldr (\x xs -> (x: head xs) : xs) [[]]
 
 
 --Ejercicio 4
---preorder :: undefined
-preorder = undefined
+preorder :: Procesador (AT a) a
+preorder = foldAT (\w x y z -> w : x ++ y ++ z) []
 
---inorder :: undefined
-inorder = undefined
+postorder :: Procesador (AT a) a
+postorder = foldAT (\w x y z -> x ++ y ++ z ++ [w]) []
 
---postorder :: undefined
-postorder = undefined
+inorder :: Procesador (AT a) a
+inorder = foldAT (\w x y z -> x ++ y ++ [w] ++ z) []
+
+{- att = Tern 16 
+        (Tern 1 (Tern 9 Nil Nil Nil) (Tern 7 Nil Nil Nil) (Tern 2 Nil Nil Nil)) 
+        (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil)) 
+        (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil)) -}
 
 --Ejercicio 5
 
 preorderRose :: Procesador (RoseTree a) a
-preorderRose = undefined
+preorderRose = foldRose (\x rec -> x : foldr (++) [] rec)
 
 hojasRose :: Procesador (RoseTree a) a
-hojasRose = undefined
+hojasRose = foldRose (\x rec -> if null rec then [x] else concat rec)
 
 ramasRose :: Procesador (RoseTree a) [a]
 ramasRose = undefined
+
+
+--Definición del árbol rosado (RoseTree)
+atRoseTree :: RoseTree Int
+atRoseTree = Rose 16 [ Rose 1 [ Rose 9 [] , Rose 7 [] , Rose 2 [] ] , Rose 14 [ Rose 0 [], Rose 3 [], Rose 6 []] , Rose 10 [ Rose 8 [], Rose 5 [], Rose 4 []]]
 
 
 --Ejercicio 6
