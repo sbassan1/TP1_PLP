@@ -93,13 +93,14 @@ procSubTries (TrieNodo a hijos) = hijos
 
 --Ejercicio 2
 
---foldAT :: undefined
-foldAT = undefined
+foldAT :: (a -> b -> b -> b -> b) -> b -> AT a -> b
+foldAT fAt c (Tern w x y z) = fAt w (foldAT fAt c x) (foldAT fAt c y) (foldAT fAt c z) 
 
---foldRose :: undefined
-foldRose = undefined
+foldRose :: (a -> [b] -> b) -> RoseTree a -> b
+foldRose fRs (Rose n roseHijos) = fRs n (map rec roseHijos)
+        where rec = foldRose fRs
 
---foldTrie :: undefined
+--foldTrie :: (a -> [(c,b)] -> b) -> Trie a -> b
 foldTrie = undefined
 
 
