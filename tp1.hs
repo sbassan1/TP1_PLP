@@ -44,7 +44,7 @@ instance Show a => Show (AT a) where
             showSubtree (indent + 2) left ++
             showSubtree (indent + 2) middle ++
             showSubtree (indent + 2) right
-        
+
         showSubtree :: Show a => Int -> AT a -> String
         showSubtree indent subtree =
             case subtree of
@@ -53,7 +53,7 @@ instance Show a => Show (AT a) where
 
 instance Show a => Show (Trie a) where
     show = showTrie ""
-      where 
+      where
         showTrie :: Show a => String -> Trie a -> String
         showTrie indent (TrieNodo maybeValue children) =
             let valueLine = case maybeValue of
@@ -65,17 +65,17 @@ instance Show a => Show (Trie a) where
 
 --Ejercicio 1
 procVacio :: Procesador a b
-procVacio = []
+procVacio _ = []
 -- De estos tres no estoy seguro bien de como se hacen
 procId :: Procesador a a
-procId a = a  
+procId a = [a]
 
 procCola :: Procesador [a] a
-procCola [] = [] 
-procCola (_:xs) = xs 
+procCola [] = []
+procCola (_:xs) = xs
 
 procHijosRose :: Procesador (RoseTree a) (RoseTree a)
-procHijosRose Rose _ roseHijos = roseHijos
+procHijosRose (Rose _ roseHijos) = roseHijos
 -- Rose a [RoseTree a]
 
 procHijosAT :: Procesador (AT a) (AT a)
@@ -84,11 +84,11 @@ procHijosAT (Tern _ izq medio der) = [izq, medio, der]
 -- AT a puede ser Nil ó Tern a (AT a) (AT a) (AT a)
 
 procRaizTrie :: Procesador (Trie a) (Maybe a)
-procRaizTrie TrieNodo a _ = a
+procRaizTrie (TrieNodo a _) = [a]
 -- Trie a es TrieNodo (Maybe a) [(Char, Trie a)] y te pide la parte del Maybe
 
 procSubTries :: Procesador (Trie a) (Char, Trie a)
-procSubTries TrieNodo a hijos = hijos
+procSubTries (TrieNodo a hijos) = hijos
 -- Lo mismo pero quiere los hijos == el Char y el siguiente Trie a
 
 --Ejercicio 2
@@ -179,7 +179,6 @@ allTests = test [ -- Reemplazar los tests de prueba por tests propios
   "ejercicio8b" ~: testsEj8b,
   "ejercicio8c" ~: testsEj8c
   ]
-
 testsEj1 = test [ -- Casos de test para el ejercicio 1
   0             -- Caso de test 1 - expresión a testear
     ~=? 0                                                               -- Caso de test 1 - resultado esperado
