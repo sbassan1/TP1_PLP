@@ -105,8 +105,8 @@ foldRose :: (a -> [b] -> b) -> RoseTree a -> b
 foldRose fRs (Rose n roseHijos) = fRs n (map rec roseHijos)
         where rec = foldRose fRs
 
-foldTrie :: (Maybe a1  -> ((a2 -> b1) -> [a2] -> [b1])  -> ((a3, Trie a1) -> (a3, b2))  -> [(Char, Trie a1)]  -> b2) -> Trie a1 -> b2
-foldTrie fT (TrieNodo a as) = fT a map (\(x,xs) -> (x, foldTrie fT xs)) as
+foldTrie :: (Maybe a -> [(Char,b)] -> b) -> Trie a -> b
+foldTrie fT (TrieNodo a as) = fT a (map (\(x,xs) -> (x, foldTrie fT xs)) as)
 
 
 --Ejercicio 3
@@ -151,13 +151,12 @@ atRoseTree = Rose 16 [ Rose 1 [ Rose 9 [] , Rose 7 [] , Rose 2 [] ] , Rose 14 [ 
 
 --Ejercicio 6
 
---caminos :: undefined
-caminos = undefined
-
+caminos :: Trie a -> [String]
+caminos = foldTrie (\t tr -> "" : concatMap (\(c, cr) -> if null cr then [[c]] else map (c:) cr) tr)
 
 --Ejercicio 7
 
---palabras :: undefined
+--palabras :: Procesador (Trie a) [String]
 palabras = undefined
 
 
