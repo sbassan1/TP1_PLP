@@ -135,7 +135,7 @@ inorder = foldAT (\w x y z -> x ++ y ++ [w] ++ z) []
 --Ejercicio 5
 
 preorderRose :: Procesador (RoseTree a) a
-preorderRose = foldRose (\x rec -> x : foldr (++) [] rec)
+preorderRose = foldRose (\x rec -> x : concat rec)
 
 hojasRose :: Procesador (RoseTree a) a
 hojasRose = foldRose (\x rec -> if null rec then [x] else concat rec)
