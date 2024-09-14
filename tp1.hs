@@ -1,6 +1,7 @@
 module Proceso (Procesador, AT(Nil,Tern), RoseTree(Rose), Trie(TrieNodo), foldAT, foldRose, foldTrie, procVacio, procId, procCola, procHijosRose, procHijosAT, procRaizTrie, procSubTries, unoxuno, sufijos, inorder, preorder, postorder, preorderRose, hojasRose, ramasRose, caminos, palabras, ifProc,(++!), (.!)) where
 
 import Test.HUnit
+import Data.Maybe (isNothing)
 
 
 --Definiciones de tipos
@@ -66,7 +67,7 @@ instance Show a => Show (Trie a) where
 --Ejercicio 1
 procVacio :: Procesador a b
 procVacio _ = []
--- De estos tres no estoy seguro bien de como se hacen
+
 procId :: Procesador a a
 procId a = [a]
 
@@ -156,8 +157,8 @@ caminos = foldTrie (\t tr -> "" : concatMap (\(c, cr) -> if null cr then [[c]] e
 
 --Ejercicio 7
 
---palabras :: Procesador (Trie a) [String]
-palabras = undefined
+palabras :: Trie a -> [String]
+palabras = foldTrie (\t tr -> concatMap (\(c,cr) -> if null cr || isNothing t then [[c]] else map (c:) cr) tr)
 
 
 --Ejercicio 8
