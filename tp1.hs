@@ -1,7 +1,7 @@
 module Proceso (Procesador, AT(Nil,Tern), RoseTree(Rose), Trie(TrieNodo), foldAT, foldRose, foldTrie, procVacio, procId, procCola, procHijosRose, procHijosAT, procRaizTrie, procSubTries, unoxuno, sufijos, inorder, preorder, postorder, preorderRose, hojasRose, ramasRose, caminos, palabras, ifProc,(++!), (.!)) where
 
 import Test.HUnit
-import Data.Maybe (isNothing)
+import Data.Maybe (isNothing, isJust)
 
 
 --Definiciones de tipos
@@ -63,27 +63,6 @@ instance Show a => Show (Trie a) where
                 childrenLines = concatMap (\(c, t) -> showTrie (indent ++ "  " ++ [c] ++ ": ") t) children
             in valueLine ++ childrenLines
 
-at = Tern 1 (Tern 2 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil)
-at2 = Tern 2 Nil Nil Nil
-at3 = Tern 3 Nil Nil Nil
-at4 = Tern 4 Nil Nil Nil
-atEj1 = Tern 1 (at2) (at3) (at4)
-
-atNoHijos = Nil
-
-rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
-rt1 = Rose 2 []
-rt2 = Rose 3 [Rose 4 []]
-rtEj1 = Rose 1 [rt1, rt2]
-
-roseNoHijos = Rose 1 []
-
-t = TrieNodo (Just True) [('a', TrieNodo (Just True) []), ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])]), ('c', TrieNodo (Just True) [])]
-
-trieNoHijos = TrieNodo (Just True) []
-t1 = ('a', TrieNodo (Just True) [])
-t2 = ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])])
-trieEj1 = TrieNodo (Just True) [t1,t2]
 
 --Ejercicio 1
 procVacio :: Procesador a b
@@ -194,6 +173,39 @@ ifProc f a b = (\ x -> if f x then a x else b x)
 
 --Ejercicio 9
 -- Se recomienda poner la demostración en un documento aparte, por claridad y prolijidad, y, preferentemente, en algún formato de Markup o Latex, de forma de que su lectura no sea complicada.
+
+-- Parametros para casos de test
+at = Tern 1 (Tern 2 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil)
+at2 = Tern 2 Nil Nil Nil
+at3 = Tern 3 Nil Nil Nil
+at4 = Tern 4 Nil Nil Nil
+atEj1 = Tern 1 (at2) (at3) (at4)
+
+atNoHijos = Nil
+
+rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
+rt1 = Rose 2 []
+rt2 = Rose 3 [Rose 4 []]
+
+rt3 = Rose 6 [Rose 7 [], Rose 8 [Rose 9 [Rose 10 []], Rose 11 [Rose 12 []]]]
+rtEj1 = Rose 1 [rt1, rt2]
+
+rtEj2 = Rose 1 [rt,rt2]
+
+rtEj3 = Rose 1 [rt1,rt2,rt3]
+
+roseNoHijos = Rose 1 []
+
+
+trieNoHijos = TrieNodo (Just True) []
+t1 = ('d', TrieNodo (Just True) [])
+t2 = ('p', TrieNodo Nothing [('r', TrieNodo (Just True) [('e', TrieNodo Nothing [])])])
+trieEj1 = TrieNodo (Just True) [t1,t2]
+trieEj2 = TrieNodo (Just True) [('a', TrieNodo (Just True) []), ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])]), ('c', TrieNodo (Just True) [])]
+
+trieEj3 = TrieNodo (Just 1) [('h', TrieNodo (Just 2) [('o', TrieNodo (Just 3) [('l', TrieNodo Nothing [('a', TrieNodo (Just 5) [('p', TrieNodo Nothing [])])])])]),('m', TrieNodo (Just 6) [('u', TrieNodo (Just 7) [('n', TrieNodo (Just 8) [('d', TrieNodo Nothing [('o', TrieNodo (Just 10) [('w', TrieNodo Nothing [])])])])])])]
+
+trieEj4 = TrieNodo (Just True) [('y', TrieNodo (Just True) []), ('n', TrieNodo Nothing [('o', TrieNodo (Just True) [('v', TrieNodo Nothing [])])]), ('t', TrieNodo (Just True) [('r', TrieNodo (Just True) [('i', TrieNodo Nothing [('e', TrieNodo (Just True) [('d', TrieNodo (Just True) [])])])])])]
 
 
 {-Tests-}
@@ -316,13 +328,25 @@ testsEj5 = test [ -- Casos de test para el ejercicio 5
   ]
 
 testsEj6 = test [ -- Casos de test para el ejercicio 6
-  False       -- Caso de test 1 - expresión a testear
-    ~=? False                                            -- Caso de test 1 - resultado esperado
+  caminos trieEj1       
+    ~=? ["","a","b","ba","bad","c"]
+  ,
+  caminos trieEj3
+    ~=? ["","h","ho","hol","hola","holap","m","mun","mund","mundo","mundow"]                                            
+  ,
+  caminos trieEj4
+    ~=? ["","y","n","no","nov","t","tr","tri","trie","tried"]
   ]
 
 testsEj7 = test [ -- Casos de test para el ejercicio 7
-  True         -- Caso de test 1 - expresión a testear
-    ~=? True                                          -- Caso de test 1 - resultado esperado
+  palabras trieEj1       
+    ~=? ["a","ba","c"]
+  ,
+  palabras trieEj3
+    ~=? ["hola","mundo"]                                            
+  ,
+  palabras trieEj4
+    ~=? ["y","no","trie"]                                          -- Caso de test 1 - resultado esperado
   ]
 
 testsEj8a = test [ -- Casos de test para el ejercicio 7
