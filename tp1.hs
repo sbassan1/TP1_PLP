@@ -63,6 +63,27 @@ instance Show a => Show (Trie a) where
                 childrenLines = concatMap (\(c, t) -> showTrie (indent ++ "  " ++ [c] ++ ": ") t) children
             in valueLine ++ childrenLines
 
+at = Tern 1 (Tern 2 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil)
+at2 = Tern 2 Nil Nil Nil
+at3 = Tern 3 Nil Nil Nil
+at4 = Tern 4 Nil Nil Nil
+atEj1 = Tern 1 (at2) (at3) (at4)
+
+atNoHijos = Nil
+
+rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
+rt1 = Rose 2 []
+rt2 = Rose 3 [Rose 4 []]
+rtEj1 = Rose 1 [rt1, rt2]
+
+roseNoHijos = Rose 1 []
+
+t = TrieNodo (Just True) [('a', TrieNodo (Just True) []), ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])]), ('c', TrieNodo (Just True) [])]
+
+trieNoHijos = TrieNodo (Just True) []
+t1 = ('a', TrieNodo (Just True) [])
+t2 = ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])])
+trieEj1 = TrieNodo (Just True) [t1,t2]
 
 --Ejercicio 1
 procVacio :: Procesador a b
@@ -93,14 +114,11 @@ procSubTries (TrieNodo a hijos) = hijos
 -- Lo mismo pero quiere los hijos == el Char y el siguiente Trie a
 
 --Ejercicio 2
-at = Tern 1 (Tern 2 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil)
-t = TrieNodo (Just True) [('a', TrieNodo (Just True) []), ('b', TrieNodo Nothing [('a', TrieNodo (Just True) [('d', TrieNodo Nothing [])])]), ('c', TrieNodo (Just True) [])]
 
-rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
 
 foldAT :: (a -> b -> b -> b -> b) -> b -> AT a -> b
 foldAT fAt c Nil = c
-foldAT fAt c (Tern w x y z) = fAt w (foldAT fAt c x) (foldAT fAt c y) (foldAT fAt c z) 
+foldAT fAt c (Tern w x y z) = fAt w (foldAT fAt c x) (foldAT fAt c y) (foldAT fAt c z)
 
 foldRose :: (a -> [b] -> b) -> RoseTree a -> b
 foldRose fRs (Rose n roseHijos) = fRs n (map rec roseHijos)
@@ -128,9 +146,9 @@ postorder = foldAT (\w x y z -> x ++ y ++ z ++ [w]) []
 inorder :: Procesador (AT a) a
 inorder = foldAT (\w x y z -> x ++ y ++ [w] ++ z) []
 
-att = Tern 16 
-        (Tern 1 (Tern 9 Nil Nil Nil) (Tern 7 Nil Nil Nil) (Tern 2 Nil Nil Nil)) 
-        (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil)) 
+att = Tern 16
+        (Tern 1 (Tern 9 Nil Nil Nil) (Tern 7 Nil Nil Nil) (Tern 2 Nil Nil Nil))
+        (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil))
         (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil))
 
 --Ejercicio 5
@@ -196,11 +214,41 @@ allTests = test [ -- Reemplazar los tests de prueba por tests propios
   "ejercicio8c" ~: testsEj8c
   ]
 testsEj1 = test [ -- Casos de test para el ejercicio 1
-  0             -- Caso de test 1 - expresión a testear
-    ~=? 0                                                               -- Caso de test 1 - resultado esperado
+  procVacio []             -- Caso de test 1 - expresión a testear
+    ~=? ([] :: [Int])
   ,
-  1     -- Caso de test 2 - expresión a testear
-    ~=? 1                                                               -- Caso de test 2 - resultado esperado
+  procCola []             -- Caso de test 1 - expresión a testear
+    ~=? ([] :: [Int])
+  ,
+  procCola [1]             -- Caso de test 1 - expresión a testear
+    ~=? ([] :: [Int])
+  ,
+  procCola [1,2]             -- Caso de test 1 - expresión a testear
+    ~=? ([2] :: [Int])
+  ,
+  procHijosRose rtEj1
+      ~=? [rt1,rt2]
+  ,
+  procHijosRose roseNoHijos
+      ~=? []
+  ,
+  procHijosAT atEj1     -- Caso de test 2 - expresión a testear
+    ~=? [at2,at3,at4]                                                    -- Caso de test 2 - resultado esperado
+  ,
+  procHijosAT atNoHijos     -- Caso de test 2 - expresión a testear
+    ~=? ([] :: [AT Int])   
+  ,
+  procRaizTrie trieNoHijos
+      ~=? [Just True]   
+  ,
+  procRaizTrie trieEj1
+      ~=? [Just True]
+  ,
+  procSubTries trieNoHijos
+      ~=? []   
+  ,
+  procSubTries trieEj1
+      ~=? [t1,t2]
   ]
 
 testsEj2 = test [ -- Casos de test para el ejercicio 2
@@ -209,14 +257,58 @@ testsEj2 = test [ -- Casos de test para el ejercicio 2
   ]
 
 testsEj3 = test [ -- Casos de test para el ejercicio 3
-  'a'      -- Caso de test 1 - expresión a testear
-    ~=? 'a'            -- Caso de test 1 - resultado esperado
+  unoxuno [3,1,4,1,5,9]    
+    ~=? [[3],[1],[4],[1],[5],[9]]
+  ,
+  unoxuno []      
+    ~=? ([] :: [[Int]])   
+  ,
+  unoxuno "Amigo"   
+    ~=? ["A","m","i","g","o"]
+  ,  
+  sufijos "Amigo"   
+    ~=? ["Amigo","migo","igo","go","o",""]
+  ,  
+  sufijos ""   
+    ~=? [""]
+  ,  
+  sufijos []   
+    ~=? ([[]] :: [[Int]])
+  ,  
+  sufijos [1,2,3,4]   
+    ~=? [[1,2,3,4],[2,3,4],[3,4],[4],[]]
+  
   ]
 
 testsEj4 = test [ -- Casos de test para el ejercicio 4
-  ""       -- Caso de test 1 - expresión a testear
-    ~=? ""                             -- Caso de test 1 - resultado esperado
+  preorder att     
+    ~=? [16,1,9,7,2,14,0,3,6,10,8,5,4]
+  ,                            
+  preorder (Tern Nil (Nil) (Nil) (Nil))  
+    ~=? ([Nil] :: [AT Int])
+  ,                            
+  preorder at
+    ~=? [1,2,3,4]
+  ,
+  postorder att     
+    ~=? [9,7,2,1,0,3,6,14,8,5,4,10,16]
+  ,  
+  postorder (Tern Nil (Nil) (Nil) (Nil))  
+    ~=? ([Nil] :: [AT Int])
+  ,
+  postorder at     
+    ~=? [2,3,4,1]
+  ,  
+  inorder att     
+    ~=? [9,7,1,2,0,3,14,6,16,8,5,10,4]
+  ,  
+  inorder (Tern Nil (Nil) (Nil) (Nil))  
+    ~=? ([Nil] :: [AT Int])
+  ,  
+  inorder at     
+    ~=? [2,3,1,4]
   ]
+
 
 testsEj5 = test [ -- Casos de test para el ejercicio 5
   0       -- Caso de test 1 - expresión a testear
