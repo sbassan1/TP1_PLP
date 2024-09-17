@@ -1,0 +1,71 @@
+-------------------------------------- Reglas y Funciones --------------------------------------
+
+    preorder :: Procesador (AT a) a
+P1. preorder = foldAT (\w x y z -> w : x ++ y ++ z) []
+
+    postorder :: Procesador (AT a) a
+P0. postorder = foldAT (\w x y z -> x ++ y ++ z ++ [w]) []
+
+    elem :: Int -> [Int] -> Bool
+E0. elem x [] = False
+E1. elem x (y:ys) = if x == y then True else elem x ys
+
+-------------------------------------- EJERCICIO 9 --------------------------------------
+
+Tengo que probar que:
+
+∀t :: AT a . ∀x :: a . ( elem x (preorder t) = elem x (postorder t) )
+
+Voy a probar esto con induccion estructural.
+
+--------------------------------------  CASO BASE   --------------------------------------
+
+Caso Base AT: atVacio = Tern Nil (Nil) (Nil) (Nil) 
+
+Reemplazo t con atVacio.
+                    elem x (preorder atVacio) = elem x (postorder atVacio)
+
+Como preorder y postorder devuelven una lista de elementos de un AT, si esta vacia devuelve [].
+
+                    elem x [] = elem x []
+
+Esto por E0 da falso.
+                        False = False
+
+Como False == False entonces el caso base es verdadero
+
+--------------------------------------  HIPOTESIS INDUCTIVA --------------------------------------
+La Hipotesis Inductiva es:
+
+    elem x (preorder t) = elem x (postorder t)
+
+---- 
+El paso inductivo muestra que P(izq) & P(med) && P(der) ==> P(t)
+
+donde izq, med y der son AT's
+----
+La Hipotesis Inductiva es:
+
+elem x (preorder t) = elem x (postorder t)
+
+Donde t es un Tern a (AT a) (AT a) (AT a)
+
+----
+El paso inductivo es:
+
+elem x (w: (preorder izq) ++ (preorder med) ++ (preorder der)) = elem x (w: (postorder izq) ++ (postorder med) ++ (postorder der))
+
+Hay dos casos de elem segun E1 (elem x (y:ys)) , voy a pasar por ambos
+
+1) Caso en el cual x == w.
+
+En ese caso devuelve True para ambos.
+Por E1 (elem x (y:ys) = if x == y then True else elem x ys)
+    True = True
+
+2) Caso en el cual x /= w.
+
+Por E1 (elem x (y:ys) = if x == y then True else elem x ys)
+Reemplazo con el termino del else de E1
+
+elem x ((preorder izq) ++ (preorder med) ++ (preorder der)) = elem x ((postorder izq) ++ (postorder med) ++ (postorder der))
