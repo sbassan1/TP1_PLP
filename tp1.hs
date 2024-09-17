@@ -128,10 +128,10 @@ postorder = foldAT (\w x y z -> x ++ y ++ z ++ [w]) []
 inorder :: Procesador (AT a) a
 inorder = foldAT (\w x y z -> x ++ y ++ [w] ++ z) []
 
-{- att = Tern 16 
+att = Tern 16 
         (Tern 1 (Tern 9 Nil Nil Nil) (Tern 7 Nil Nil Nil) (Tern 2 Nil Nil Nil)) 
         (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil)) 
-        (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil)) -}
+        (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil))
 
 --Ejercicio 5
 
@@ -164,11 +164,11 @@ palabras = foldTrie (\t tr -> concatMap (\(c,cr) -> if null cr || isNothing t th
 --Ejercicio 8
 -- 8.a)
 ifProc :: (a->Bool) -> Procesador a b -> Procesador a b -> Procesador a b
-ifProc = undefined
+ifProc f a b = (\ x -> if f x then a x else b x)
 
 -- 8.b)
 (++!) :: Procesador a b -> Procesador a b -> Procesador a b
-(++!) = undefined
+(++!) a b = (\x -> (a x) ++ (b x))
 
 -- 8.c)
 (.!) :: Procesador b c -> Procesador a b -> Procesador a c
