@@ -185,14 +185,18 @@ atNoHijos = Nil
 
 rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
 rt1 = Rose 2 []
-rt2 = Rose 3 [Rose 4 []]
+rt2 = Rose 3 [Rose 4 [Rose 5 []], Rose 8 []]
 
 rt3 = Rose 6 [Rose 7 [], Rose 8 [Rose 9 [Rose 10 []], Rose 11 [Rose 12 []]]]
+
+rt4 = Rose 12 [Rose 3 [], Rose 2 [Rose 7 [Rose 15 []], Rose 21 [Rose 6 []]]]
+
+rt5 = Rose 6 [Rose 5 [Rose 76 [], Rose 1 [],Rose 4 []], Rose 8 [],Rose 3 [], Rose 18 [Rose 11 [], Rose 12 [],Rose 89 []],Rose 31 [], Rose 22 [],Rose 0 [Rose 19 [], Rose 3 [],Rose 5 []]]
 rtEj1 = Rose 1 [rt1, rt2]
 
-rtEj2 = Rose 1 [rt,rt2]
+rtEj2 = Rose 1 [rt4,rt,rt2]
 
-rtEj3 = Rose 1 [rt1,rt2,rt3]
+rtEj3 = Rose 1 [rt1,rt5,rt2,rt3]
 
 roseNoHijos = Rose 1 []
 
@@ -323,8 +327,39 @@ testsEj4 = test [ -- Casos de test para el ejercicio 4
 
 
 testsEj5 = test [ -- Casos de test para el ejercicio 5
-  0       -- Caso de test 1 - expresión a testear
-    ~=? 0                                       -- Caso de test 1 - resultado esperado
+  preorderRose roseNoHijos       
+    ~=? [1]
+  ,
+  preorderRose rtEj2
+    ~=? [1,12,3,2,7,15,21,6,1,2,3,4,5,6,7,3,4,5,8]                                            
+  ,
+  preorderRose rtEj3
+    ~=? [1,2,6,5,76,1,4,8,3,18,11,12,89,31,22,0,19,3,5,3,4,5,8,6,7,8,9,10,11,12]
+  ,
+  hojasRose roseNoHijos       
+    ~=? [1]
+  ,
+  hojasRose rtEj2
+    ~=? [3,15,6,3,5,6,7,5,8]                                           
+  ,
+  hojasRose rtEj3
+    ~=? [2,76,1,4,8,3,11,12,89,31,22,19,3,5,5,8,7,10,12]
+  ,
+  ramasRose roseNoHijos      
+    ~=? [[1]]
+  ,
+  ramasRose rtEj2
+    ~=? [[1,12,3],[1,12,2,7,15],[1,12,2,21,6],
+        [1,1,2,3],[1,1,2,4,5],[1,1,2,4,6],
+        [1,1,2,4,7],[1,3,4,5],[1,3,8]]                                            
+  ,
+  ramasRose rtEj3
+    ~=? [[1,2],[1,6,5,76],[1,6,5,1],
+        [1,6,5,4],[1,6,8],[1,6,3],
+        [1,6,18,11],[1,6,18,12],[1,6,18,89],
+        [1,6,31],[1,6,22],[1,6,0,19],
+        [1,6,0,3],[1,6,0,5],[1,3,4,5],
+        [1,3,8],[1,6,7],[1,6,8,9,10],[1,6,8,11,12]]
   ]
 
 testsEj6 = test [ -- Casos de test para el ejercicio 6
