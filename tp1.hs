@@ -181,6 +181,8 @@ at3 = Tern 3 Nil Nil Nil
 at4 = Tern 4 Nil Nil Nil
 atEj1 = Tern 1 (at2) (at3) (at4)
 
+atVacio = Nil
+
 atNoHijos = Nil
 
 rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
@@ -252,16 +254,16 @@ testsEj1 = test [ -- Casos de test para el ejercicio 1
     ~=? [at2,at3,at4]                                                    -- Caso de test 2 - resultado esperado
   ,
   procHijosAT atNoHijos     -- Caso de test 2 - expresión a testear
-    ~=? ([] :: [AT Int])   
+    ~=? ([] :: [AT Int])
   ,
   procRaizTrie trieNoHijos
-      ~=? [Just True]   
+      ~=? [Just True]
   ,
   procRaizTrie trieEj1
       ~=? [Just True]
   ,
   procSubTries trieNoHijos
-      ~=? []   
+      ~=? []
   ,
   procSubTries trieEj1
       ~=? [t1,t2]
@@ -273,85 +275,85 @@ testsEj2 = test [ -- Casos de test para el ejercicio 2
   ]
 
 testsEj3 = test [ -- Casos de test para el ejercicio 3
-  unoxuno [3,1,4,1,5,9]    
+  unoxuno [3,1,4,1,5,9]
     ~=? [[3],[1],[4],[1],[5],[9]]
   ,
-  unoxuno []      
-    ~=? ([] :: [[Int]])   
+  unoxuno []
+    ~=? ([] :: [[Int]])
   ,
-  unoxuno "Amigo"   
+  unoxuno "Amigo"
     ~=? ["A","m","i","g","o"]
-  ,  
-  sufijos "Amigo"   
+  ,
+  sufijos "Amigo"
     ~=? ["Amigo","migo","igo","go","o",""]
-  ,  
-  sufijos ""   
+  ,
+  sufijos ""
     ~=? [""]
-  ,  
-  sufijos []   
+  ,
+  sufijos []
     ~=? ([[]] :: [[Int]])
-  ,  
-  sufijos [1,2,3,4]   
+  ,
+  sufijos [1,2,3,4]
     ~=? [[1,2,3,4],[2,3,4],[3,4],[4],[]]
-  
+
   ]
 
 testsEj4 = test [ -- Casos de test para el ejercicio 4
-  preorder att     
+  preorder att
     ~=? [16,1,9,7,2,14,0,3,6,10,8,5,4]
-  ,                            
-  preorder (Tern Nil (Nil) (Nil) (Nil))  
+  ,
+  preorder (Tern Nil (Nil) (Nil) (Nil))
     ~=? ([Nil] :: [AT Int])
-  ,                            
+  ,
   preorder at
     ~=? [1,2,3,4]
   ,
-  postorder att     
+  postorder att
     ~=? [9,7,2,1,0,3,6,14,8,5,4,10,16]
-  ,  
-  postorder (Tern Nil (Nil) (Nil) (Nil))  
+  ,
+  postorder (Tern Nil (Nil) (Nil) (Nil))
     ~=? ([Nil] :: [AT Int])
   ,
-  postorder at     
+  postorder at
     ~=? [2,3,4,1]
-  ,  
-  inorder att     
+  ,
+  inorder att
     ~=? [9,7,1,2,0,3,14,6,16,8,5,10,4]
-  ,  
-  inorder (Tern Nil (Nil) (Nil) (Nil))  
+  ,
+  inorder (Tern Nil (Nil) (Nil) (Nil))
     ~=? ([Nil] :: [AT Int])
-  ,  
-  inorder at     
+  ,
+  inorder at
     ~=? [2,3,1,4]
   ]
 
 
 testsEj5 = test [ -- Casos de test para el ejercicio 5
-  preorderRose roseNoHijos       
+  preorderRose roseNoHijos
     ~=? [1]
   ,
   preorderRose rtEj2
-    ~=? [1,12,3,2,7,15,21,6,1,2,3,4,5,6,7,3,4,5,8]                                            
+    ~=? [1,12,3,2,7,15,21,6,1,2,3,4,5,6,7,3,4,5,8]
   ,
   preorderRose rtEj3
     ~=? [1,2,6,5,76,1,4,8,3,18,11,12,89,31,22,0,19,3,5,3,4,5,8,6,7,8,9,10,11,12]
   ,
-  hojasRose roseNoHijos       
+  hojasRose roseNoHijos
     ~=? [1]
   ,
   hojasRose rtEj2
-    ~=? [3,15,6,3,5,6,7,5,8]                                           
+    ~=? [3,15,6,3,5,6,7,5,8]
   ,
   hojasRose rtEj3
     ~=? [2,76,1,4,8,3,11,12,89,31,22,19,3,5,5,8,7,10,12]
   ,
-  ramasRose roseNoHijos      
+  ramasRose roseNoHijos
     ~=? [[1]]
   ,
   ramasRose rtEj2
     ~=? [[1,12,3],[1,12,2,7,15],[1,12,2,21,6],
         [1,1,2,3],[1,1,2,4,5],[1,1,2,4,6],
-        [1,1,2,4,7],[1,3,4,5],[1,3,8]]                                            
+        [1,1,2,4,7],[1,3,4,5],[1,3,8]]
   ,
   ramasRose rtEj3
     ~=? [[1,2],[1,6,5,76],[1,6,5,1],
@@ -363,36 +365,69 @@ testsEj5 = test [ -- Casos de test para el ejercicio 5
   ]
 
 testsEj6 = test [ -- Casos de test para el ejercicio 6
-  caminos trieEj1       
+  caminos trieEj1
     ~=? ["","a","b","ba","bad","c"]
   ,
   caminos trieEj3
-    ~=? ["","h","ho","hol","hola","holap","m","mun","mund","mundo","mundow"]                                            
+    ~=? ["","h","ho","hol","hola","holap","m","mun","mund","mundo","mundow"]
   ,
   caminos trieEj4
     ~=? ["","y","n","no","nov","t","tr","tri","trie","tried"]
   ]
 
 testsEj7 = test [ -- Casos de test para el ejercicio 7
-  palabras trieEj1       
+  palabras trieEj1
     ~=? ["a","ba","c"]
   ,
   palabras trieEj3
-    ~=? ["hola","mundo"]                                            
+    ~=? ["hola","mundo"]
   ,
   palabras trieEj4
     ~=? ["y","no","trie"]                                          -- Caso de test 1 - resultado esperado
   ]
 
+
+esNilAT :: AT a -> Bool
+esNilAT Nil = True
+esNilAT _   = False
+
+
 testsEj8a = test [ -- Casos de test para el ejercicio 7
-  True         -- Caso de test 1 - expresión a testear
-    ~=? True                                          -- Caso de test 1 - resultado esperado
+  ifProc odd procId procVacio 2        -- Caso de test 1 - expresión a testear
+    ~=? []
+  ,                                          -- Caso de test 1 - resultado esperado
+  ifProc even procId procVacio 2        -- Caso de test 1 - expresión a testear
+    ~=? [2]
+  ,
+  ifProc esNilAT procId procVacio Nil
+    ~=? ([Nil] :: [AT Int])
+  ,
+  ifProc (not . esNilAT) procId procVacio Nil
+    ~=? ([] :: [AT Int])
+  ,
+  ifProc ( not . esNilAT) procId procVacio at
+    ~=? procId at
+  
   ]
 testsEj8b = test [ -- Casos de test para el ejercicio 7
-  True         -- Caso de test 1 - expresión a testear
-    ~=? True                                          -- Caso de test 1 - resultado esperado
+  (++!) postorder preorder att
+    ~=? [9,7,2,1,0,3,6,14,8,5,4,10,16,16,1,9,7,2,14,0,3,6,10,8,5,4]
+  ,
+  (++!) postorder preorder Nil
+    ~=? ([] :: [AT Int])
+  ,
+  (++!) (procCola . postorder) preorder att  -- Igual al primero pero sin la cabeza
+    ~=? [7,2,1,0,3,6,14,8,5,4,10,16,16,1,9,7,2,14,0,3,6,10,8,5,4]
   ]
+
 testsEj8c = test [ -- Casos de test para el ejercicio 7
-  True         -- Caso de test 1 - expresión a testear
-    ~=? True                                          -- Caso de test 1 - resultado esperado
+  (.!) (\z -> [0..z]) (map (+1)) [1,3]
+    ~=? [0,1,2,0,1,2,3,4]
+  ,
+  (.!) procId (map (+1)) []
+    ~=? []
+  ,
+  (.!) (\z -> [z, z*2,z*3]) (map (^2)) [4]
+    ~=? [16,32,48]
+
   ]
