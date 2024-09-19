@@ -244,236 +244,257 @@ allTests = test [ -- Reemplazar los tests de prueba por tests propios
   "ejercicio8b" ~: testsEj8b,
   "ejercicio8c" ~: testsEj8c
   ]
-testsEj1 = test [ -- Casos de test para el ejercicio 1
-  procVacio []             -- Caso de test 1 - expresión a testear
+testsEj1 = test [
+  "Prueba de procVacio con lista vacía" ~: procVacio []
     ~=? ([] :: [Int])
   ,
-  procCola []             -- Caso de test 1 - expresión a testear
+  "Prueba de procCola con lista vacía" ~: procCola []
     ~=? ([] :: [Int])
   ,
-  procCola [1]             -- Caso de test 1 - expresión a testear
+  "Prueba de procCola con un elemento" ~: procCola [1]
     ~=? ([] :: [Int])
   ,
-  procCola [1,2]             -- Caso de test 1 - expresión a testear
+  "Prueba de procCola con dos elementos" ~: procCola [1,2]
     ~=? ([2] :: [Int])
   ,
-  procHijosRose rtEj1
-      ~=? [rt1,rt2]
+  "Prueba de procHijosRose con rtEj1" ~: procHijosRose rtEj1
+    ~=? [rt1,rt2]
   ,
-  procHijosRose roseNoHijos
-      ~=? []
+  "Prueba de procHijosRose con roseNoHijos" ~: procHijosRose roseNoHijos
+    ~=? []
   ,
-  procHijosAT atEj1     -- Caso de test 2 - expresión a testear
-    ~=? [at2,at3,at4]                                                    -- Caso de test 2 - resultado esperado
+  "Prueba de procHijosAT con atEj1" ~: procHijosAT atEj1
+    ~=? [at2,at3,at4]
   ,
-  procHijosAT atNoHijos     -- Caso de test 2 - expresión a testear
+  "Prueba de procHijosAT con atNoHijos" ~: procHijosAT atNoHijos
     ~=? ([] :: [AT Int])
   ,
-  procRaizTrie trieNoHijos
-      ~=? [Just True]
+  "Prueba de procRaizTrie con trieNoHijos" ~: procRaizTrie trieNoHijos
+    ~=? [Just True]
   ,
-  procRaizTrie trieEj1
-      ~=? [Just True]
+  "Prueba de procRaizTrie con trieEj1" ~: procRaizTrie trieEj1
+    ~=? [Just True]
   ,
-  procSubTries trieNoHijos
-      ~=? []
+  "Prueba de procSubTries con trieNoHijos" ~: procSubTries trieNoHijos
+    ~=? []
   ,
-  procSubTries trieEj1
-      ~=? [t1,t2]
+  "Prueba de procSubTries con trieEj1" ~: procSubTries trieEj1
+    ~=? [t1,t2]
   ]
 
-testsEj2 = test [ -- Casos de test para el ejercicio 2
-  foldAT (\w x y z -> Tern (1 + w) x y z) Nil at
+testsEj2 = test [
+  "Prueba de foldAT modificando el valor de los nodos" ~: foldAT (\w x y z -> Tern (1 + w) x y z) Nil at
     ~=? atRes
   ,
-  foldAT (\w x y z -> Tern (1 + w) x y z) Nil atNoHijos
+  "Prueba de foldAT con árbol sin hijos" ~: foldAT (\w x y z -> Tern (1 + w) x y z) Nil atNoHijos
     ~=? atNoHijos
   ,
-  foldAT (\w x y z -> Tern w x y z) Nil at
+  "Prueba de foldAT manteniendo los valores originales" ~: foldAT (\w x y z -> Tern w x y z) Nil at
     ~=? at
   ,
-  foldAT (\w x y z -> Tern w x y z) Nil at2
+  "Prueba de foldAT en árbol simple" ~: foldAT (\w x y z -> Tern w x y z) Nil at2
     ~=? at2
   ,
-  foldRose (\x rec -> Rose (1+x) rec) rt
+  "Prueba de foldRose modificando los valores de los nodos" ~: foldRose (\x rec -> Rose (1+x) rec) rt
     ~=? rtRes
   ,
-  foldRose (\x rec -> Rose (1+x) rec) roseNoHijos
+  "Prueba de foldRose con árbol sin hijos" ~: foldRose (\x rec -> Rose (1+x) rec) roseNoHijos
     ~=? Rose 2 []
   ,
-  foldRose (\x rec -> Rose x rec) rt
+  "Prueba de foldRose manteniendo valores originales" ~: foldRose (\x rec -> Rose x rec) rt
     ~=? rt
   ,
-  foldRose (\x rec -> Rose x rec) roseNoHijos
+  "Prueba de foldRose en árbol sin hijos" ~: foldRose (\x rec -> Rose x rec) roseNoHijos
     ~=? roseNoHijos
   ,
-  foldTrie (\t tr -> TrieNodo (sumaTrie t) tr) trieEj5
+  "Prueba de foldTrie sumando valores en los nodos" ~: foldTrie (\t tr -> TrieNodo (sumaTrie t) tr) trieEj5
     ~=? trieEj5Res
   ,
-  foldTrie (\t tr -> TrieNodo (sumaTrie t) tr) trieNoHijosI
+  "Prueba de foldTrie con trie sin hijos" ~: foldTrie (\t tr -> TrieNodo (sumaTrie t) tr) trieNoHijosI
     ~=? trieNoHijosIRes
   ,
-  foldTrie (\t tr -> TrieNodo t tr) trieEj3
+  "Prueba de foldTrie manteniendo valores originales" ~: foldTrie (\t tr -> TrieNodo t tr) trieEj3
     ~=? trieEj3
   ,
-  foldTrie (\t tr -> TrieNodo t tr) trieNoHijosI
+  "Prueba de foldTrie en trie sin hijos" ~: foldTrie (\t tr -> TrieNodo t tr) trieNoHijosI
     ~=? trieNoHijosI
   ]
 
-testsEj3 = test [ -- Casos de test para el ejercicio 3
-  unoxuno [3,1,4,1,5,9]
+testsEj3 = test [
+  "Prueba de unoxuno con lista de enteros" ~: unoxuno [3,1,4,1,5,9]
     ~=? [[3],[1],[4],[1],[5],[9]]
   ,
-  unoxuno []
+  "Prueba de unoxuno con lista vacía" ~: unoxuno []
     ~=? ([] :: [[Int]])
   ,
-  unoxuno "Amigo"
+  "Prueba de unoxuno con cadena de caracteres" ~: unoxuno "Amigo"
     ~=? ["A","m","i","g","o"]
   ,
-  sufijos "Amigo"
+  "Prueba de sufijos con cadena de caracteres" ~: sufijos "Amigo"
     ~=? ["Amigo","migo","igo","go","o",""]
   ,
-  sufijos ""
+  "Prueba de sufijos con cadena vacía" ~: sufijos ""
     ~=? [""]
   ,
-  sufijos []
+  "Prueba de sufijos con lista vacía" ~: sufijos []
     ~=? ([[]] :: [[Int]])
   ,
-  sufijos [1,2,3,4]
+  "Prueba de sufijos con lista de enteros" ~: sufijos [1,2,3,4]
     ~=? [[1,2,3,4],[2,3,4],[3,4],[4],[]]
-
   ]
 
-testsEj4 = test [ -- Casos de test para el ejercicio 4
-  preorder att
+testsEj4 = test [
+  "Prueba de preorder en árbol att" ~: preorder att
     ~=? [16,1,9,7,2,14,0,3,6,10,8,5,4]
   ,
-  preorder (Tern Nil (Nil) (Nil) (Nil))
+  "Prueba de preorder en árbol vacío" ~: preorder (Tern Nil (Nil) (Nil) (Nil))
     ~=? ([Nil] :: [AT Int])
   ,
-  preorder at
+  "Prueba de preorder en árbol at" ~: preorder at
     ~=? [1,2,3,4]
   ,
-  postorder att
+  "Prueba de postorder en árbol att" ~: postorder att
     ~=? [9,7,2,1,0,3,6,14,8,5,4,10,16]
   ,
-  postorder (Tern Nil (Nil) (Nil) (Nil))
+  "Prueba de postorder en árbol vacío" ~: postorder (Tern Nil (Nil) (Nil) (Nil))
     ~=? ([Nil] :: [AT Int])
   ,
-  postorder at
+  "Prueba de postorder en árbol at" ~: postorder at
     ~=? [2,3,4,1]
   ,
-  inorder att
+  "Prueba de inorder en árbol att" ~: inorder att
     ~=? [9,7,1,2,0,3,14,6,16,8,5,10,4]
   ,
-  inorder (Tern Nil (Nil) (Nil) (Nil))
+  "Prueba de inorder en árbol vacío" ~: inorder (Tern Nil (Nil) (Nil) (Nil))
     ~=? ([Nil] :: [AT Int])
   ,
-  inorder at
+  "Prueba de inorder en árbol at" ~: inorder at
     ~=? [2,3,1,4]
   ]
 
-
-testsEj5 = test [ -- Casos de test para el ejercicio 5
+testsEj5 = test [ 
+  "Prueba de preorderRose con un árbol sin hijos" ~: 
   preorderRose roseNoHijos
     ~=? [1]
   ,
+  "Prueba de preorderRose con rtEj2" ~: 
   preorderRose rtEj2
     ~=? [1,12,3,2,7,15,21,6,1,2,3,4,5,6,7,3,4,5,8]
   ,
+  "Prueba de preorderRose con rtEj3" ~: 
   preorderRose rtEj3
     ~=? [1,2,6,5,76,1,4,8,3,18,11,12,89,31,22,0,19,3,5,3,4,5,8,6,7,8,9,10,11,12]
   ,
+  "Prueba de hojasRose con un árbol sin hijos" ~: 
   hojasRose roseNoHijos
     ~=? [1]
   ,
+  "Prueba de hojasRose con rtEj2" ~: 
   hojasRose rtEj2
     ~=? [3,15,6,3,5,6,7,5,8]
   ,
+  "Prueba de hojasRose con rtEj3" ~: 
   hojasRose rtEj3
     ~=? [2,76,1,4,8,3,11,12,89,31,22,19,3,5,5,8,7,10,12]
   ,
+  "Prueba de ramasRose con un árbol sin hijos" ~: 
   ramasRose roseNoHijos
     ~=? [[1]]
   ,
+  "Prueba de ramasRose con rtEj2" ~: 
   ramasRose rtEj2
     ~=? [[1,12,3],[1,12,2,7,15],[1,12,2,21,6],
-        [1,1,2,3],[1,1,2,4,5],[1,1,2,4,6],
-        [1,1,2,4,7],[1,3,4,5],[1,3,8]]
+         [1,1,2,3],[1,1,2,4,5],[1,1,2,4,6],
+         [1,1,2,4,7],[1,3,4,5],[1,3,8]]
   ,
+  "Prueba de ramasRose con rtEj3" ~: 
   ramasRose rtEj3
     ~=? [[1,2],[1,6,5,76],[1,6,5,1],
-        [1,6,5,4],[1,6,8],[1,6,3],
-        [1,6,18,11],[1,6,18,12],[1,6,18,89],
-        [1,6,31],[1,6,22],[1,6,0,19],
-        [1,6,0,3],[1,6,0,5],[1,3,4,5],
-        [1,3,8],[1,6,7],[1,6,8,9,10],[1,6,8,11,12]]
+         [1,6,5,4],[1,6,8],[1,6,3],
+         [1,6,18,11],[1,6,18,12],[1,6,18,89],
+         [1,6,31],[1,6,22],[1,6,0,19],
+         [1,6,0,3],[1,6,0,5],[1,3,4,5],
+         [1,3,8],[1,6,7],[1,6,8,9,10],[1,6,8,11,12]]
   ]
 
-testsEj6 = test [ -- Casos de test para el ejercicio 6
+testsEj6 = test [ 
+  "Prueba de caminos con trieEj1" ~: 
   caminos trieEj1
     ~=? ["","d","p","pr","pre"]
   ,
+  "Prueba de caminos con trieEj3" ~: 
   caminos trieEj3
     ~=? ["","h","ho","hol","hola","holap","m","mu","mun","mund","mundo","mundow"]
   ,
+  "Prueba de caminos con trieEj4" ~: 
   caminos trieEj4
     ~=? ["","y","n","no","nov","t","tr","tri","trie","tried"]
   ]
 
-testsEj7 = test [ -- Casos de test para el ejercicio 7
+testsEj7 = test [ 
+  "Prueba de palabras con trieEj1" ~: 
   palabras trieEj1
     ~=? ["d","pr"]
   ,
+  "Prueba de palabras con trieEj3" ~: 
   palabras trieEj3
     ~=? ["hola","mundo"]
   ,
+  "Prueba de palabras con trieEj4" ~: 
   palabras trieEj4
-    ~=? ["y","no","trie"]                                          -- Caso de test 1 - resultado esperado
+    ~=? ["y","no","trie"]
   ]
-
 
 esNilAT :: AT a -> Bool
 esNilAT Nil = True
-esNilAT _   = False
+esNilAT _ = False
 
-
-testsEj8a = test [ -- Casos de test para el ejercicio 7
-  ifProc odd procId procVacio 2        -- Caso de test 1 - expresión a testear
+testsEj8a = test [ 
+  "Prueba de ifProc con número impar (no se guarda)" ~: 
+  ifProc odd procId procVacio 2
     ~=? []
-  ,                                          -- Caso de test 1 - resultado esperado
-  ifProc even procId procVacio 2        -- Caso de test 1 - expresión a testear
+  ,
+  "Prueba de ifProc con número par (se guarda)" ~: 
+  ifProc even procId procVacio 2
     ~=? [2]
   ,
+  "Prueba de ifProc con Nil como condición verdadera" ~: 
   ifProc esNilAT procId procVacio Nil
     ~=? ([Nil] :: [AT Int])
   ,
+  "Prueba de ifProc con Nil como condición falsa" ~: 
   ifProc (not . esNilAT) procId procVacio Nil
     ~=? ([] :: [AT Int])
   ,
-  ifProc ( not . esNilAT) procId procVacio at
+  "Prueba de ifProc con AT no Nil como condición verdadera" ~: 
+  ifProc (not . esNilAT) procId procVacio at
     ~=? procId at
-  
   ]
-testsEj8b = test [ -- Casos de test para el ejercicio 7
+
+testsEj8b = test [ 
+  "Prueba de (++!) con postorder y preorder en att" ~: 
   (++!) postorder preorder att
     ~=? [9,7,2,1,0,3,6,14,8,5,4,10,16,16,1,9,7,2,14,0,3,6,10,8,5,4]
   ,
+  "Prueba de (++!) con postorder y preorder en Nil" ~: 
   (++!) postorder preorder Nil
     ~=? ([] :: [AT Int])
   ,
-  (++!) (procCola . postorder) preorder att  -- Igual al primero pero sin la cabeza
+  "Prueba de (++!) sin la cabeza" ~: 
+  (++!) (procCola . postorder) preorder att
     ~=? [7,2,1,0,3,6,14,8,5,4,10,16,16,1,9,7,2,14,0,3,6,10,8,5,4]
   ]
 
-testsEj8c = test [ -- Casos de test para el ejercicio 7
+testsEj8c = test [ 
+  "Prueba de (.!) con lista generada y map (+1)" ~: 
   (.!) (\z -> [0..z]) (map (+1)) [1,3]
     ~=? [0,1,2,0,1,2,3,4]
   ,
+  "Prueba de (.!) con procId y map (+1)" ~: 
   (.!) procId (map (+1)) []
     ~=? []
   ,
-  (.!) (\z -> [z, z*2,z*3]) (map (^2)) [4]
+  "Prueba de (.!) con lista personalizada y map (^2)" ~: 
+  (.!) (\z -> [z, z*2, z*3]) (map (^2)) [4]
     ~=? [16,32,48]
-
   ]
