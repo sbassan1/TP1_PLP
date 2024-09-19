@@ -299,7 +299,7 @@ testsEj2 = test [ -- Casos de test para el ejercicio 2
     ~=? rtRes
   ,
   foldRose (\x rec -> Rose (1+x) rec) roseNoHijos
-    ~=? roseNoHijos
+    ~=? Rose 2 []
   ,
   foldRose (\x rec -> Rose x rec) rt
     ~=? rt
@@ -412,10 +412,10 @@ testsEj5 = test [ -- Casos de test para el ejercicio 5
 
 testsEj6 = test [ -- Casos de test para el ejercicio 6
   caminos trieEj1
-    ~=? ["","a","b","ba","bad","c"]
+    ~=? ["","d","p","pr","pre"]
   ,
   caminos trieEj3
-    ~=? ["","h","ho","hol","hola","holap","m","mun","mund","mundo","mundow"]
+    ~=? ["","h","ho","hol","hola","holap","m","mu","mun","mund","mundo","mundow"]
   ,
   caminos trieEj4
     ~=? ["","y","n","no","nov","t","tr","tri","trie","tried"]
@@ -423,7 +423,7 @@ testsEj6 = test [ -- Casos de test para el ejercicio 6
 
 testsEj7 = test [ -- Casos de test para el ejercicio 7
   palabras trieEj1
-    ~=? ["a","ba","c"]
+    ~=? ["d","pr"]
   ,
   palabras trieEj3
     ~=? ["hola","mundo"]

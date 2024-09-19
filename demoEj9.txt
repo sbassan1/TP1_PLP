@@ -69,7 +69,7 @@ Reemplazo con el termino del else de E1
 
 elem x ((preorder izq) ++ (preorder med) ++ (preorder der)) = elem x ((postorder izq) ++ (postorder med) ++ (postorder der))
 
---(1) Como elem x no altera la estructura de las listas puedo decir que esta expresion es igual a la anterior.
+Como elem x no altera la estructura de las listas puedo decir que esta expresion es igual a la anterior.
 
 elem x (preorder izq) || elem x (preorder med) || elem x (preorder der) = elem x (postorder izq) || elem x (postorder med) || elem x (postorder der)
 
