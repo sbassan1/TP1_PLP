@@ -10,7 +10,7 @@ P0. postorder = foldAT (\w x y z -> x ++ y ++ z ++ [w]) []
 E0. elem x [] = False
 E1. elem x (y:ys) = if x == y then True else elem x ys
 
--------------------------------------- EJERCICIO 9 --------------------------------------
+--------------------------------------   EJERCICIO 9     --------------------------------------
 
 Tengo que probar que:
 
@@ -18,7 +18,7 @@ Tengo que probar que:
 
 Voy a probar esto con induccion estructural.
 
---------------------------------------  CASO BASE   --------------------------------------
+----------------------------------------  CASO BASE   ----------------------------------------
 
 Caso Base AT: atVacio = Tern Nil (Nil) (Nil) (Nil) 
 
@@ -34,28 +34,27 @@ Esto por E0 da falso.
 
 Como False == False entonces el caso base es verdadero
 
---------------------------------------  HIPOTESIS INDUCTIVA --------------------------------------
-La Hipotesis Inductiva es:
+--------------------------------------   HIPOTESIS INDUCTIVA     --------------------------------------
 
-    elem x (preorder t) = elem x (postorder t)
-
----- 
-El paso inductivo muestra que P(izq) & P(med) && P(der) ==> P(t)
-
-donde izq, med y der son AT's
-----
 La Hipotesis Inductiva es:
 
 elem x (preorder t) = elem x (postorder t)
 
 Donde t es un Tern a (AT a) (AT a) (AT a)
 
-----
+----------------------------------------    PASO INDUCTIVO      ----------------------------------------
+
+QvQ hay que probar P(izq) & P(med) && P(der) ==> P(t)
+
 El paso inductivo es:
+
+elem x (preorder w izq med der) = elem x (postorder w izq med der)
+
+Reemplazo preorder y postorder por P0 y P1
 
 elem x (w: (preorder izq) ++ (preorder med) ++ (preorder der)) = elem x (w: (postorder izq) ++ (postorder med) ++ (postorder der))
 
-Hay dos casos de elem segun E1 (elem x (y:ys)) , voy a pasar por ambos
+Hay dos casos para elem segun E1 (elem x (y:ys)), voy a pasar por ambos
 
 1) Caso en el cual x == w.
 
@@ -70,12 +69,15 @@ Reemplazo con el termino del else de E1
 
 elem x ((preorder izq) ++ (preorder med) ++ (preorder der)) = elem x ((postorder izq) ++ (postorder med) ++ (postorder der))
 
-Como elem x no altera la estructura de las listas puedo decir que esta expresion es igual altera
+--(1) Como elem x no altera la estructura de las listas puedo decir que esta expresion es igual a la anterior.
 
 elem x (preorder izq) || elem x (preorder med) || elem x (preorder der) = elem x (postorder izq) || elem x (postorder med) || elem x (postorder der)
 
-Y si aplico HI.
+Y si aplico HI. (elem x (preorder t) = elem x (postorder t)) en cada uno de los preorder y postorder queda: 
 
 elem x (postorder izq) || elem x (postorder med) || elem x (postorder der) = elem x (postorder izq) || elem x (postorder med) || elem x (postorder der)
 
-Lo cual cumple con la igualdad!!
+Lo cual cumple con la igualdad, probando la demo.
+
+------------------------------------------------------------------------------------------------------------------------
+
