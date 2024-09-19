@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Trabajo Práctico N°1 - PLP
 
 ## Demostración del ejercicio 9
@@ -26,11 +31,11 @@ elem x (y:ys) = if x == y then True else elem x ys      -- E1
 
 Se debe demostrar lo siguiente:
 
-$\forall t :: AT a . ∀ x :: a . ( elem x (preorder \ t) = elem x (postorder \ t) )$
+$\forall t :: AT a . \forall x :: a . ( elem x (preorder \ t) = elem x (postorder \ t) )$
 
 Voy a probar esto con induccion estructural.
 
-#### Caso Base
+### Caso Base
 
 **Caso Base AT:** 
 
@@ -57,9 +62,9 @@ La **Hipótesis Inductiva** es:
 
 Donde $t$ es un $Tern \ a (AT \ a) \ (AT \ a) \ (AT \ a)$
 
-#### Paso Inductivo
+### Paso Inductivo
 
-QvQ hay que probar $P(izq) \ \& \ P(med) \  \& \ P(der) \implies P(t)$
+Quiero ver que hay que probar $P(izq) \ \& \ P(med) \  \& \ P(der) \implies P(t)$
 
 El paso inductivo es:
 
@@ -77,7 +82,7 @@ Hay dos casos para elem según $E1 \ (elem x (y:ys))$, voy a pasar por ambos
    - Por $E1 \ (elem \ x (y:ys) = if \ x == y \ \ then \ \ True \ \ else \ \ elem \ x \ ys)$
    - $True = True$
 
-2. Caso en el cual x /= w.
+2. Caso en el cual $x \neq w$.
 
     - Por $E1 (elem \ x (y:ys) = if \ x == y \ \ then \ \ True  \ \ else \ \ elem \ x \ ys)$
     - Reemplazo con el termino del else de $E1$
@@ -86,11 +91,11 @@ Hay dos casos para elem según $E1 \ (elem x (y:ys))$, voy a pasar por ambos
 
     - Como $elem \ x$ no altera la estructura de las listas puedo decir que esta expresión es igual a la anterior.
 
-    - $elem \ x (preorder \ izq) \ || \ elem \ x (preorder \ med) \ || \ elem \ x (preorder \ der) = elem \ x (postorder \ izq) \ || \ elem \ x (postorder \ med) \ || \ elem \ x (postorder \ der)$
+    - $elem \ x (preorder \ izq) \ || \ elem \ x (preorder \ med) \ || \ elem \ x (preorder \ der) = elem \ x \\ (postorder \ izq) \ || \ elem \ x (postorder \ med) \ || \ elem \ x (postorder \ der)$
 
     - Y si aplico **HI**. $(elem \ x (preorder \ t) = elem \ x (postorder \ t))$ en cada uno de los preorder y postorder queda: 
 
-        - $elem \ x (postorder \ izq) \ || \ elem \ x (postorder \ med) || elem \ x (postorder \ der) = elem \ x (postorder \ izq) \ || \ elem \ x (postorder \ med) \ || \ elem x \ (postorder \ der)$
+        - $elem \ x (postorder \ izq) \ || \ elem \ x (postorder \ med) || elem \ x (postorder \ der) = elem \ x (postorder \ izq) \\ || \ elem \ x (postorder \ med) \ || \ elem x \ (postorder \ der)$
 
     - Lo cual cumple con la igualdad, probando la demo.
 
