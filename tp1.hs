@@ -176,6 +176,7 @@ ifProc f a b = (\ x -> if f x then a x else b x)
 
 -- Parametros para casos de test
 at = Tern 1 (Tern 2 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil)
+atRes = Tern 2 (Tern 3 Nil Nil Nil) (Tern 4 Nil Nil Nil) (Tern 5 Nil Nil Nil) 
 at2 = Tern 2 Nil Nil Nil
 at3 = Tern 3 Nil Nil Nil
 at4 = Tern 4 Nil Nil Nil
@@ -185,7 +186,9 @@ atVacio = Nil
 
 atNoHijos = Nil
 
+
 rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
+rtRes = Rose 2 [Rose 3 [Rose 4 [], Rose 5 [Rose 6 [], Rose 7 [], Rose 8 []]]]
 rt1 = Rose 2 []
 rt2 = Rose 3 [Rose 4 [Rose 5 []], Rose 8 []]
 
@@ -204,6 +207,8 @@ roseNoHijos = Rose 1 []
 
 
 trieNoHijos = TrieNodo (Just True) []
+trieNoHijosI = TrieNodo (Just 1) []
+trieNoHijosIRes = TrieNodo (Just 2) []
 t1 = ('d', TrieNodo (Just True) [])
 t2 = ('p', TrieNodo Nothing [('r', TrieNodo (Just True) [('e', TrieNodo Nothing [])])])
 trieEj1 = TrieNodo (Just True) [t1,t2]
@@ -212,6 +217,14 @@ trieEj2 = TrieNodo (Just True) [('a', TrieNodo (Just True) []), ('b', TrieNodo N
 trieEj3 = TrieNodo (Just 1) [('h', TrieNodo (Just 2) [('o', TrieNodo (Just 3) [('l', TrieNodo Nothing [('a', TrieNodo (Just 5) [('p', TrieNodo Nothing [])])])])]),('m', TrieNodo (Just 6) [('u', TrieNodo (Just 7) [('n', TrieNodo (Just 8) [('d', TrieNodo Nothing [('o', TrieNodo (Just 10) [('w', TrieNodo Nothing [])])])])])])]
 
 trieEj4 = TrieNodo (Just True) [('y', TrieNodo (Just True) []), ('n', TrieNodo Nothing [('o', TrieNodo (Just True) [('v', TrieNodo Nothing [])])]), ('t', TrieNodo (Just True) [('r', TrieNodo (Just True) [('i', TrieNodo Nothing [('e', TrieNodo (Just True) [('d', TrieNodo (Just True) [])])])])])]
+
+trieEj5 = TrieNodo (Just 1) [('a', TrieNodo (Just 2) []), ('b', TrieNodo (Just 3) [('a', TrieNodo (Just 4) [('d', TrieNodo (Just 5) [])])]), ('c', TrieNodo (Just 6) [])]
+trieEj5Res = TrieNodo (Just 2) [('a', TrieNodo (Just 3) []), ('b', TrieNodo (Just 4) [('a', TrieNodo (Just 5) [('d', TrieNodo (Just 6) [])])]), ('c', TrieNodo (Just 7) [])]
+
+--Funcion auxuliar para Trie
+sumaTrie :: Num a => Maybe a -> Maybe a
+sumaTrie Nothing = Nothing
+sumaTrie (Just x) = Just (x+1)
 
 
 {-Tests-}
@@ -270,8 +283,41 @@ testsEj1 = test [ -- Casos de test para el ejercicio 1
   ]
 
 testsEj2 = test [ -- Casos de test para el ejercicio 2
-  (0,0)       -- Caso de test 1 - expresión a testear
-    ~=? (0,0)                   -- Caso de test 1 - resultado esperado
+  foldAT (\w x y z -> Tern (1 + w) x y z) Nil at
+    ~=? atRes
+  ,
+  foldAT (\w x y z -> Tern (1 + w) x y z) Nil atNoHijos
+    ~=? atNoHijos
+  ,
+  foldAT (\w x y z -> Tern w x y z) Nil at
+    ~=? at
+  ,
+  foldAT (\w x y z -> Tern w x y z) Nil at2
+    ~=? at2
+  ,
+  foldRose (\x rec -> Rose (1+x) rec) rt
+    ~=? rtRes
+  ,
+  foldRose (\x rec -> Rose (1+x) rec) roseNoHijos
+    ~=? roseNoHijos
+  ,
+  foldRose (\x rec -> Rose x rec) rt
+    ~=? rt
+  ,
+  foldRose (\x rec -> Rose x rec) roseNoHijos
+    ~=? roseNoHijos
+  ,
+  foldTrie (\t tr -> TrieNodo (sumaTrie t) tr) trieEj5
+    ~=? trieEj5Res
+  ,
+  foldTrie (\t tr -> TrieNodo (sumaTrie t) tr) trieNoHijosI
+    ~=? trieNoHijosIRes
+  ,
+  foldTrie (\t tr -> TrieNodo t tr) trieEj3
+    ~=? trieEj3
+  ,
+  foldTrie (\t tr -> TrieNodo t tr) trieNoHijosI
+    ~=? trieNoHijosI
   ]
 
 testsEj3 = test [ -- Casos de test para el ejercicio 3
