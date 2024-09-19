@@ -169,7 +169,7 @@ ifProc f a b = (\ x -> if f x then a x else b x)
 
 -- 8.c)
 (.!) :: Procesador b c -> Procesador a b -> Procesador a c
-(.!) = undefined
+(.!) a b = \x -> concatMap a (b x)
 
 --Ejercicio 9
 -- Se recomienda poner la demostración en un documento aparte, por claridad y prolijidad, y, preferentemente, en algún formato de Markup o Latex, de forma de que su lectura no sea complicada.
