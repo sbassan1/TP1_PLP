@@ -125,11 +125,6 @@ postorder = foldAT (\w x y z -> x ++ y ++ z ++ [w]) []
 inorder :: Procesador (AT a) a
 inorder = foldAT (\w x y z -> x ++ y ++ [w] ++ z) []
 
-att = Tern 16
-        (Tern 1 (Tern 9 Nil Nil Nil) (Tern 7 Nil Nil Nil) (Tern 2 Nil Nil Nil))
-        (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil))
-        (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil))
-
 --Ejercicio 5
 
 preorderRose :: Procesador (RoseTree a) a
@@ -185,6 +180,11 @@ atEj1 = Tern 1 (at2) (at3) (at4)
 atVacio = Nil
 
 atNoHijos = Nil
+
+att = Tern 16
+        (Tern 1 (Tern 9 Nil Nil Nil) (Tern 7 Nil Nil Nil) (Tern 2 Nil Nil Nil))
+        (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil))
+        (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil))
 
 
 rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
