@@ -137,11 +137,6 @@ ramasRose :: Procesador (RoseTree a) [a]
 ramasRose = foldRose (\x rec -> if null rec then [[x]] else map (x:) (concat rec))
 
 
---Definición del árbol rosado (RoseTree)
-atRoseTree :: RoseTree Int
-atRoseTree = Rose 16 [ Rose 1 [ Rose 9 [] , Rose 7 [] , Rose 2 [] ] , Rose 14 [ Rose 0 [], Rose 3 [], Rose 6 []] , Rose 10 [ Rose 8 [], Rose 5 [], Rose 4 []]]
-
-
 --Ejercicio 6
 
 caminos :: Trie a -> [String]
@@ -186,6 +181,9 @@ att = Tern 16
         (Tern 14 (Tern 0 Nil Nil Nil) (Tern 3 Nil Nil Nil) (Tern 6 Nil Nil Nil))
         (Tern 10 (Tern 8 Nil Nil Nil) (Tern 5 Nil Nil Nil) (Tern 4 Nil Nil Nil))
 
+--Definición del árbol rosado (RoseTree)
+atRoseTree :: RoseTree Int
+atRoseTree = Rose 16 [ Rose 1 [ Rose 9 [] , Rose 7 [] , Rose 2 [] ] , Rose 14 [ Rose 0 [], Rose 3 [], Rose 6 []] , Rose 10 [ Rose 8 [], Rose 5 [], Rose 4 []]]
 
 rt = Rose 1 [Rose 2 [Rose 3 [], Rose 4 [Rose 5 [], Rose 6 [], Rose 7 []]]]
 rtRes = Rose 2 [Rose 3 [Rose 4 [], Rose 5 [Rose 6 [], Rose 7 [], Rose 8 []]]]
