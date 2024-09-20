@@ -89,7 +89,7 @@ Hay dos casos para elem según $E1 \ (elem x (y:ys))$, voy a pasar por ambos
 
     - $elem \ x ((preorder \ izq) ++ (preorder \ med) ++ (preorder \ der)) = elem \ x ((postorder \ izq) ++ (postorder \ med) ++ (postorder \ der))$
 
-    - Como $elem \ x$ no altera la estructura de las listas puedo decir que esta expresión es igual a la siguiente.
+    - Como $elem \ x$ no altera la estructura de las listas puedo decir que esta expresión es igual a la siguiente. Probado con *(1).
 
     - $elem \ x (preorder \ izq) \ || \ elem \ x (preorder \ med) \ || \ elem \ x (preorder \ der) = elem \ x \\ (postorder \ izq) \ || \ elem \ x (postorder \ med) \ || \ elem \ x (postorder \ der)$
 
@@ -100,3 +100,47 @@ Hay dos casos para elem según $E1 \ (elem x (y:ys))$, voy a pasar por ambos
     - Lo cual cumple con la igualdad, probando la demostración.
 
 Por lo tanto, queda demostrado que $\forall t :: AT \ a . \forall x :: a . (elem \ x \ (preorder \ t) = elem \ x \ (postorder \ t))$ . $\blacksquare$
+
+Demo para paso Inductivo en *(1)
+
+elem x ( a ++ b) == elem x a || elem x b
+
+
+elem :: Int -> [Int] -> Bool
+elem x [] = False                                       -- E0
+elem x (y:ys) = if x == y then True else elem x ys      -- E1
+
+CB. a == []
+
+elem x ([] ++ b) = elem x [] || elem x b
+
+elem x b = False || elem x b
+
+elem x b = elem x b
+
+HI. elem x ( as ++ bs) = elem x (as) || elem x (bs)
+
+PI. elem x ( a: (as ++ bs)) = elem x ( a:as ) || elem x (bs)
+
+
+elem x ( a: (as ++ bs)) = elem x ( a:as ) || elem x (bs)
+
+if x == a then True else elem x (as ++ bs)
+
+Caso x == a: (CASO TRUE)
+
+if x == a then True else elem x (as ++ bs) = if x == a then True else elem x (as) || elem x (bs)
+
+True = True || elem x (bs)
+
+True
+
+Caso x /= a: (CASO FALSE)
+
+elem x (as ++ bs) = elem x (as) || elem x (bs)
+
+Aplico HI.
+
+elem x (as) || elem x (bs) = elem (as) || elem x (bs)
+
+Y como ambos terminos son iguales se prueba la propiedad.
