@@ -219,7 +219,12 @@ trieEj4 = TrieNodo (Just True) [('y', TrieNodo (Just True) []), ('n', TrieNodo N
 trieEj5 = TrieNodo (Just 1) [('a', TrieNodo (Just 2) []), ('b', TrieNodo (Just 3) [('a', TrieNodo (Just 4) [('d', TrieNodo (Just 5) [])])]), ('c', TrieNodo (Just 6) [])]
 trieEj5Res = TrieNodo (Just 2) [('a', TrieNodo (Just 3) []), ('b', TrieNodo (Just 4) [('a', TrieNodo (Just 5) [('d', TrieNodo (Just 6) [])])]), ('c', TrieNodo (Just 7) [])]
 
---Funcion auxuliar para Trie
+--Funciones auxuliares
+
+esNilAT :: AT a -> Bool
+esNilAT Nil = True
+esNilAT _ = False
+
 sumaTrie :: Num a => Maybe a -> Maybe a
 sumaTrie Nothing = Nothing
 sumaTrie (Just x) = Just (x+1)
@@ -442,10 +447,6 @@ testsEj7 = test [
   palabras trieEj4
     ~=? ["y","no","trie"]
   ]
-
-esNilAT :: AT a -> Bool
-esNilAT Nil = True
-esNilAT _ = False
 
 testsEj8a = test [ 
   "Prueba de ifProc con número impar (no se guarda)" ~: 
