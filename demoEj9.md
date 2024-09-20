@@ -101,46 +101,82 @@ Hay dos casos para elem según $E1 \ (elem x (y:ys))$, voy a pasar por ambos
 
 Por lo tanto, queda demostrado que $\forall t :: AT \ a . \forall x :: a . (elem \ x \ (preorder \ t) = elem \ x \ (postorder \ t))$ . $\blacksquare$
 
-Demo para paso Inductivo en *(1)
+## Anotaciones
+
+## Demo para paso Inductivo en *(1)
 
 elem x ( a ++ b) == elem x a || elem x b
 
-
+```haskell
 elem :: Int -> [Int] -> Bool
 elem x [] = False                                       -- E0
 elem x (y:ys) = if x == y then True else elem x ys      -- E1
+```
 
-CB. a == []
+**Caso Base de lista Vacía:**
 
-elem x ([] ++ b) = elem x [] || elem x b
+- Caso de a == [ ] :
 
-elem x b = False || elem x b
+Reemplazamos a con [ ]:  
 
-elem x b = elem x b
+- elem x ([] ++ b) = elem x [] || elem x b
 
-HI. elem x ( as ++ bs) = elem x (as) || elem x (bs)
+Como [ ] ++ b == b, y por E0 (elem x [ ])
 
-PI. elem x ( a: (as ++ bs)) = elem x ( a:as ) || elem x (bs)
+- elem x b = False || elem x b
 
+Por logica de bool (falso || x == x)
 
-elem x ( a: (as ++ bs)) = elem x ( a:as ) || elem x (bs)
+- elem x b = elem x b
 
-if x == a then True else elem x (as ++ bs)
+La igualdad cumple, así que probamos el caso base.
 
-Caso x == a: (CASO TRUE)
+### Hipótesis Inductiva
 
-if x == a then True else elem x (as ++ bs) = if x == a then True else elem x (as) || elem x (bs)
+La hipotesis inductiva es verdadera para una lista 'a'
 
-True = True || elem x (bs)
+- elem x ( as ++ bs) = elem x (as) || elem x (bs)
 
-True
+### Paso Inductivo
 
-Caso x /= a: (CASO FALSE)
+- elem x ( (a:as) ++ bs) = elem x ( a:as ) || elem x (bs)
 
-elem x (as ++ bs) = elem x (as) || elem x (bs)
+Usamos la definición de (++) 
 
-Aplico HI.
+- elem x ( a: (as ++ bs)) = elem x ( a:as ) || elem x (bs)
 
-elem x (as) || elem x (bs) = elem (as) || elem x (bs)
+Y reemplazamos con E1 de elem
 
-Y como ambos terminos son iguales se prueba la propiedad.
+- if x == a then True else elem x (as ++ bs) = if x == a then True else elem x (as) || elem x (bs)
+
+Con esto tenemos dos casos por el if, los casos dependen si x es igual a 'a'
+
+-- **Caso (x == a), x es igual a 'a'**
+
+- if x == a then True else elem x (as ++ bs) = if x == a then True else elem x (as) || elem x (bs)
+
+Si x == a retorna True
+
+- True = True || elem x (bs)
+
+Por propiedad de logica (True || x) == True
+
+- True
+
+Lo cual nos prueba este caso de la propiedad.
+
+-- **Caso (x /= a), x no es igual a 'a'**
+
+- if x == a then True else elem x (as ++ bs) = if x == a then True else elem x (as) || elem x (bs)
+
+Usamos el caso de False del if.
+
+- elem x (as ++ bs) = elem x (as) || elem x (bs)
+
+Aplico la hipotesis inductiva sobre el termino de la izquierda
+
+- elem x (as) || elem x (bs) = elem x (as) || elem x (bs)
+
+Y como ambos terminos son iguales se prueba la propiedad de este otro lado.
+
+Como ambos casos son verdaderos probamos que la demostracion es correcta. $\blacksquare$
